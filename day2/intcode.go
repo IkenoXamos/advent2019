@@ -54,6 +54,36 @@ func runProgram(list []int, noun int, verb int) int {
 	return process(list)[0]
 }
 
+func searchNounAndVerbs(intlist []int, limit int, goal int) int {
+	for i := 0; i < limit; i++ {
+		for j := 0; j < limit; j++ {
+			cpy := make([]int, len(intlist))
+			copy(cpy, intlist)
+			if runProgram(cpy, i, j) == goal {
+				return 100 * i + j
+			}
+		}
+	}
+
+	return -1
+}
+
+func searchLinearCombination(intlist []int, limit int, goal int) int {
+	cpy := make([]int, len(intlist))
+	copy(cpy, intlist)
+	start := runProgram(cpy, 0, 0)
+
+	copy(cpy, intlist)
+	verbdelta := runProgram(cpy, 1, 0) - start
+
+	// copy(cpy, intlist)
+	// noundelta := runProgram(cpy, 0, 1) - start
+
+	verb := (goal - start) / verbdelta
+	noun := (goal - start - verbdelta * verb)
+	return verb * 100 + noun
+}
+
 func main() {
 	start := time.Now()
 
@@ -75,15 +105,8 @@ func main() {
 		intlist = append(intlist, val)
 	}
 
-	for i := 0; i < 100; i++ {
-		for j := 0; j < 100; j++ {
-			cpy := make([]int, len(intlist))
-			copy(cpy, intlist)
-			if runProgram(cpy, i, j) == 19690720 {
-				fmt.Println(100 * i + j)
-			}
-		}
-	}
+	// fmt.Println(searchLinearCombination(intlist, 100, 19690720))
+	fmt.Println(searchNounAndVerbs(intlist, 100, 19690720))
 
 	elapsed := time.Since(start)
 
