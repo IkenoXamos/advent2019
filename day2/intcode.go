@@ -84,6 +84,16 @@ func searchLinearCombination(intlist []int, limit int, goal int) int {
 	return verb * 100 + noun
 }
 
+func part1(intlist []int) int {
+	cpy := make([]int, len(intlist))
+	copy(cpy, intlist)
+	return runProgram(cpy, 12, 2)
+}
+
+func part2(intlist []int) int {
+	return searchLinearCombination(intlist, 100, 19690720)
+}
+
 func main() {
 	start := time.Now()
 
@@ -105,8 +115,8 @@ func main() {
 		intlist = append(intlist, val)
 	}
 
-	fmt.Println(searchLinearCombination(intlist, 100, 19690720))
-	// fmt.Println(searchNounAndVerbs(intlist, 100, 19690720))
+	fmt.Println(part1(intlist))
+	fmt.Println(part2(intlist))
 
 	elapsed := time.Since(start)
 
